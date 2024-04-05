@@ -86,7 +86,7 @@ interface IERC20 { // Callers MUST handle false from returns (bool success). Cal
     // approve 
     function approve(address _spender, uint _value) external returns (bool success);
 
-    event Transfer(address indexed _form, address indexed _to, uint _value);
+    event Transfer(address indexed _from, address indexed _to, uint _value);
 
     event Approval(address indexed _owner, address indexed _spender, uint _value); 
 
@@ -248,6 +248,7 @@ contract FUTURE is IERC20, IERC20Metadata, Context, IERC20Errors, Ownable {
 
         _balances[from] = _balances[from].sub(value);
         _balances[to] = _balances[to].add(value);
+        _allowances[from][_msgSender()] = _allowances[from][_msgSender()].sub(value);
     }
     
 
@@ -266,7 +267,7 @@ contract FUTURE is IERC20, IERC20Metadata, Context, IERC20Errors, Ownable {
 
         // 数量要求
         require(
-            value.mul(100) <= _totalSupply,
+            value <= _totalSupply.div(100),
             "Can not mint over 1%."
         );
         // mint逻辑
@@ -280,21 +281,21 @@ contract FUTURE is IERC20, IERC20Metadata, Context, IERC20Errors, Ownable {
 
     
 
-    function burn(uint value) public onlyOwner returns (bool) {
+    function burn(uint value) public returns (bool) {
         _burn(value); 
         return true;
     }
 
     function _burn(uint value) internal { //burn自己的代币
         // 检查余额是否充足
-        if (_balances[owner] < value) revert ERC20InsufficientBalance(owner, balanceOf(owner), value);
+        if (_balances[_msgSender()] < value) revert ERC20InsufficientBalance(_msgSender(), balanceOf(_msgSender()), value);
         
         //修改总量和个人持有量
         _totalSupply = _totalSupply.sub(value);
-        _balances[owner] = _balances[owner].sub(value);
+        _balances[_msgSender()] = _balances[_msgSender()].sub(value);
 
         //广播
-        emit Burn(owner, owner, value);
+        emit Burn(_msgSender(), _msgSender(), value);
     }
 
 
