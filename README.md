@@ -18,5 +18,5 @@ Week1:
         /utils 只包含了一个 SafeERC20.sol 文件，实现了一个库，用来帮助我们的token进行一些安全操作，比如安全转移
         /extensions 包含了各种类型token的具体实现以及两个接口，一个是metadata包含了几个可选函数，另一个是Permit，包含了permit功能的基础定义
 
-基本上
-    
+    FUTURE:
+        sepolia: 0xB14648D8c6371Fc187A980B1bc081983C6A6BB1E

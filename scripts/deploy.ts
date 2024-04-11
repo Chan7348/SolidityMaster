@@ -1,3 +1,4 @@
+// import { FUTURE } from './../typechain-types/FUTURE';
 // import { WETH } from './../typechain-types/WETH';
 // import { Signer } from "ethers";
 import { ethers } from "hardhat";
@@ -8,12 +9,12 @@ async function main() {
 
   // await Wallet.waitForDeployment();
 
-  const WETHFactory = await ethers.getContractFactory("WETH");
+  const DOGE_factory = await ethers.getContractFactory("DOGE");
 
-  const WETH = await WETHFactory.deploy();
+  const DOGE = await DOGE_factory.deploy();
 
   console.log(
-    `deployed to ${ await WETH.getAddress()}`
+    `deployed to ${ await DOGE.getAddress()}`
   );
 }
 
