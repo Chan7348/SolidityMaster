@@ -6,9 +6,10 @@ import { ERC721Enumerable } from "@openzeppelin/contracts/token/ERC721/extension
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 contract DOGE is ERC721Enumerable, Ownable {
     uint public MAX_DOGEs;
-    uint public MINT_PRICE = 0.008 ether;
+    uint public MINT_PRICE = 0.0008 ether;
 
     event FuckYouAll();
+    event TokenClaim(address claimer, uint amount);
 
     constructor() ERC721("doge token", "DOGE") Ownable(msg.sender) {
         MAX_DOGEs = 100;
@@ -24,7 +25,14 @@ contract DOGE is ERC721Enumerable, Ownable {
         }
     }
 
-    function fuckYouAll() public onlyOwner {
+    function fuckYouAll() external onlyOwner {
         emit FuckYouAll();
+    }
+
+    function claimETH() external onlyOwner {
+        uint amount = address(this).balance;
+        require(amount > 0, "Balance is 0");
+        payable(owner()).transfer(amount);
+        emit TokenClaim(owner(), amount);
     }
 }
