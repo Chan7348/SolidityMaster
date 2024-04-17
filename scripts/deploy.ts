@@ -1,3 +1,6 @@
+import { VeSTRAIGHT } from './../typechain-types/contracts/week4/VeSTRAIGHT.sol/VeSTRAIGHT';
+import { VeSTRAIGHT__factory } from './../typechain-types/factories/contracts/week4/VeSTRAIGHT.sol/VeSTRAIGHT__factory';
+import { STRAIGHT } from './../typechain-types/contracts/week4/STRAIGHT.sol/STRAIGHT';
 // import { FUTURE } from './../typechain-types/FUTURE';
 // import { WETH } from './../typechain-types/WETH';
 // import { Signer } from "ethers";
@@ -9,12 +12,20 @@ async function main() {
 
   // await Wallet.waitForDeployment();
 
-  const DOGE_factory = await ethers.getContractFactory("DOGE");
+  // const STRAIGHT_factory = await ethers.getContractFactory("STRAIGHT");
 
-  const DOGE = await DOGE_factory.deploy();
+  // const STRAIGHT = await STRAIGHT_factory.deploy();
+
+  // console.log(
+  //   `deployed to ${ await STRAIGHT.getAddress()}`
+  // );
+
+  const VeSTRAIGHT__factory = await ethers.getContractFactory("VeSTRAIGHT");
+
+  const VeSTRAIGHT = await VeSTRAIGHT__factory.deploy("0x5039a61aDFDce40A0443C32C3658895f813F5e32");
 
   console.log(
-    `deployed to ${ await DOGE.getAddress()}`
+    `deployed to ${ await VeSTRAIGHT.getAddress()}`
   );
 }
 

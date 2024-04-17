@@ -1,54 +1,10 @@
 // SPDX-License-Identifier: MIT
-
+ 
 pragma solidity ^0.8.24;
 
-// can be spent by another on-chain third party
-// solidity version above 0.4.17
-// caller must handle false from returns (bool success), cannot assume that false is never returned!!!!!!
-
-interface IERC20 {
-    // EVENTS
-
-    // MUST trigger when tokens are transferred, including zero value transfers
-    // A token contract which creates new tokens MUST trigger a Transfer event with the _from address set to 0x0
-    event Transfer(address _from, address _to, uint _value);
-
-    // MUST trigger on all successful calls to approve(address _spender, uint _value)
-    event Approval(address _owner, address _spender, uint _value);
-
-    // METHODS
-
-    function name() external view returns (string memory);
-
-    function symbol() external view returns (string memory);
-
-    function decimals() external view returns (uint8);
-
-    function totalSupply() external view returns (uint);
-
-    // returns the balance of the specific account with address _owner
-    function balanceOf(address _owner) external view returns (uint balance);
-
-    // Transfers _vale amount of tokens from msg.sender to _to
-    // MUST fire the Transfer event
-    // MUST throw if the msg.sender's balance does not have enough tokens to spend
-    // MUST treat transfers of 0 value as normal transfers and fire event
-    function transfer(address _to, uint _value) external returns (bool success);
-
-    function transferFrom(address _from, address _to, uint _value) external returns (bool success);
-
-    function approve(address _spender, uint _value) external returns (bool success);
-
-    function allowance(address _owner, address _spender) external view returns (uint remaining);
-}
-
-interface ERC20Errors {
-    error ERC20InsufficientBalance(address caller, address from, uint need, uint value);
-    error ERC20InvalidSpender(address spender, address owner);
-    error ERC20InsufficientAllowance(address spender, address owner, uint need, uint value);
-}
-
-abstract contract ERC20 is IERC20, ERC20Errors {
+import { IERC20 } from "./interfaces/IERC20.sol";
+import { IERC20Errors } from "./interfaces/IERC20Errors.sol";
+abstract contract ERC20 is IERC20, IERC20Errors {
 
     string public name_;
     string public symbol_;
@@ -145,35 +101,4 @@ abstract contract ERC20 is IERC20, ERC20Errors {
     }
       
 
-}
-
-contract Ownable {
-    address private owner_;
-
-    event TransferOwnership(address oldOne, address newOne);
-    constructor(address _owner) {
-        owner_ = _owner;
-    }
-
-    function getOwner() public view returns (address){
-        return owner_;
-    }
-
-    modifier onlyOwner {
-        require(msg.sender == owner_, "YOU ARE NOT OWNER!!");
-        _;
-    }
-
-    // include ownership give up
-    function transferOwnership(address _newOwner) public onlyOwner {
-        owner_ = _newOwner;
-        emit TransferOwnership(msg.sender, _newOwner);
-    }
-}
-
-contract REMAKE is ERC20, Ownable {
-    constructor() ERC20("remake token", "REMAKE", 8) Ownable(msg.sender) {
-        balance_[msg.sender] = 2000_0000_0000_0000;
-        totalSupply_ = 2000_0000_0000_0000;
-    }
 }
