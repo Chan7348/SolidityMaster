@@ -20,6 +20,7 @@
     FUTURE:
         sepolia: 0xB14648D8c6371Fc187A980B1bc081983C6A6BB1E
 
+    VeLOCK, 投票治理代币-非标准ERC20
 用户锁定LOCK，提供 {amount, time(<= 365 days)}, 我们记录OriginTime, 记录 OriginVeLock， amount(OriginVeLOCK) = amount(LOCK) * time / 365;
 
 最大锁定时间为一年
