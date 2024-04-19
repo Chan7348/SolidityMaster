@@ -1,10 +1,8 @@
 # HardhatTemplate
-    实现一个ERC20代币合约并完成部署和verify到sepolia网络，除了满足最基本的ERC20标准之外，再增加几个要求：
+    实现一个ERC20代币合约并完成部署和verify到sepolia网络，除了满足最基本的ERC20标准之外，再增加几个功能：
         1. 支持增发，但每次增发比例不能超过1%，且增发间隔至少需要1年以上；
         2. 只有合约的owner才可以增发；
         3. 支持销毁，用户可以销毁自己的代币，获得授权的也可以销毁被授权者的代币；
-        4. 部署要remix和hardhat两种方式都熟悉；
-        5. verify要用remix和hardhat，以及直接在区块链浏览器上都能verify
 
 分析了一下openzeppelin的ERC20代码库，基本实现逻辑是这样：
     ERC20文件夹下分为
