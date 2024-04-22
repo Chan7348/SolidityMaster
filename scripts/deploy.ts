@@ -2,12 +2,10 @@ import { viem } from "hardhat";
 import { vars } from "hardhat/config";
 
 async function deploy() {
-    const [fromWalletClient, toWalletClient] = await viem.getWalletClients();
-
+    await viem.deployContract("ForTest");
 }
 
-deploy().catch(console.error)
-.then((error) => {
+deploy().then(() => process.exit(0)).catch(error => {
     console.error(error);
-    process.exit(0);
+    process.exit(1);
 });
