@@ -1,7 +1,7 @@
 import { HardhatUserConfig, vars } from "hardhat/config";
-import "@nomicfoundation/hardhat-toolbox";
-import "@nomicfoundation/hardhat-ignition-ethers";
-import "@nomicfoundation/hardhat-chai-matchers";
+import "@nomicfoundation/hardhat-toolbox-viem";
+import "@nomicfoundation/hardhat-viem";
+import "@nomicfoundation/hardhat-foundry";
 const config: HardhatUserConfig = {
   solidity: {
     version: "0.8.24",
@@ -21,9 +21,9 @@ const config: HardhatUserConfig = {
         // url: vars.get("MAINNET_ALCHEMY_URL") || "",
         // url: "https://rpc.merlinchain.io", // merlin 
         // url: "https://arb-sepolia.g.alchemy.com/v2/a1Z6RxI8nUQLxzzNnYDbDkSzwZYpsmHU", //arbitrum sepolia
-        url: "https://endpoints.omniatech.io/v1/eth/sepolia/public", //sepolia
+        url: "https://eth-sepolia.g.alchemy.com/v2/7dg61Re-J49kkBk9urxJIBwCRaVQcWq8", //sepolia
         // blockNumber: 19532800,
-        blockNumber: 5634369,
+        // blockNumber: 5634369,
       },
       blockGasLimit: 60000000,
       // hardfork: "cancun",
@@ -33,7 +33,7 @@ const config: HardhatUserConfig = {
       accounts: [vars.get("TEST1_KEY"), vars.get("TEST2_KEY")],
     },
     sepolia: {
-      url: "https://endpoints.omniatech.io/v1/eth/sepolia/public" || "",
+      url: "https://eth-sepolia.g.alchemy.com/v2/7dg61Re-J49kkBk9urxJIBwCRaVQcWq8" || "",
       accounts: [vars.get("TEST1_KEY"), vars.get("TEST2_KEY")],
     }
   },

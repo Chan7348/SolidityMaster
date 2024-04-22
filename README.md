@@ -21,9 +21,9 @@
 
 VeLOCK, 投票治理代币-非标准ERC20
 
-    用户锁定LOCK，提供 {amount, time(<= 365 days)}, 我们记录OriginTime, 记录 OriginVeLock， amount(OriginVeLOCK) = amount(LOCK) * time / 365;
+    用户锁定LOCK，提供 {amount, duration( 30 days <= duration <= 365 days)}, 我们记录OriginTime, 记录 OriginVeLock， amount(OriginVeLOCK) = amount(LOCK) * time / 365;
 
-    最大锁定时间为一年
+    最小锁定时间为30天，最大锁定时间为一年
     假如一个人锁定一个LOCK 365天，那么他立即得到一个VeLOCK，这个VeLOCK每天会减少初始量的1/365
     先要设计出一份VeLOCK的损耗逻辑和实现方式
 
@@ -79,4 +79,4 @@ VeLOCK, 投票治理代币-非标准ERC20
         _update() 在_deposit()内部需要执行，计算当前时间点的VeLOCK
         _checkSingle 检查和更新单独用户的锁仓量和解锁量
 
-    每次用户查询的时候才更新 VeLOCK的量
+

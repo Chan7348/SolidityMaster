@@ -30,37 +30,34 @@ contract Ownable {
 
 
 contract VeLOCK is Ownable {
-
     struct personalVeLock {
-    uint amount; //质押的LOCK数量
-    uint originTime; //初始锁定时间
-    uint duration; //锁定时长，单位为天
-    uint unlockTime; //解锁时间
-    uint originVeLock; //初始的VeLOCK计算结果
+        uint amount; //质押的LOCK数量
+        uint originTime; //初始锁定时间
+        uint duration; //锁定时长，单位为天
+        uint unlockTime; //解锁时间
+        uint originVeLock; //初始的VeLOCK计算结果
     }
 
-    mapping(address => personalVeLock[]) public userLocks;
+    mapping(address => personalVeLock[]) private userLocks;
     address[] public users;
 
-    uint private totalLOCKstaked;
-    uint private totalVeLock;
+    event AddLock(address indexed user, uint amount, uint duration);
+    event WithdrawLock(address indexed user, uint amount);
 
-    LOCK internal token;
-    constructor(address tokenAddr) Ownable(msg.sender) {
-        token = LOCK(tokenAddr);
+    LOCK public token = LOCK(0xBE474255dC5946eB46125973AE50538b42542b77);
+    constructor() Ownable(msg.sender) {
     }
 
-    // for all
-    
     function addLock(uint amount, uint duration) public {
-        require(amount>0, "Lock amount must be greater than 0");
-        require(duration>0 && duration<=365, "Lock duration must be between 1 and 365 days");
+        require(amount > 0, "Lock amount must be greater than 0");
+        require(duration >= 30 && duration <= 365, "Lock duration must be between 30 and 365 days");
 
         uint originTime = block.timestamp;
         uint unlockTime = originTime + duration * 1 days;
         uint originVeLock = (amount * duration) / 365;
 
-        //添加或者更新用户锁定信息
+        LOCK(token).transferFrom(msg.sender, address(this), amount);
+
         userLocks[msg.sender].push(personalVeLock({
             amount: amount,
             originTime: originTime,
@@ -68,47 +65,59 @@ contract VeLOCK is Ownable {
             unlockTime: unlockTime,
             originVeLock: originVeLock
         }));
-        if (_isUserExists(msg.sender)) users.push(msg.sender);
+
+        if (!_isUserExists(msg.sender)) users.push(msg.sender);
+
+        emit AddLock(msg.sender, amount, duration);
     }
 
-    function stake() external returns (bool) {
+    function withdrawLock(uint index) public {
+        require(index < userLocks[msg.sender].length, "Index out of range");
 
+        personalVeLock storage lock = userLocks[msg.sender][index];
+        require(block.timestamp >= lock.unlockTime, "Lock is still in progress");
+
+        LOCK(token).transfer(msg.sender, lock.amount);
+
+        userLocks[msg.sender][index] = userLocks[msg.sender][userLocks[msg.sender].length - 1];
+        userLocks[msg.sender].pop();
+
+        emit WithdrawLock(msg.sender, lock.amount);
     }
 
-    function getVeToken(address owner) external returns (bool) {
+    function getVotingPower(address user) public view returns (uint power, uint totalPower) {
+        uint personal = _calculatePersonalVeLOCK(user);
+        uint system = _calculateTotalVeLOCK();
 
-    } 
+        require(system > 0, "No VeLOCK in the system, cannot calculate voting power.");
 
-    function getTotalLOCKstaked() public view returns (uint) {
-
+        return (personal, system);
     }
 
-    function getTotalVeLock() public returns (uint) {
+    function _calculatePersonalVeLOCK(address user) internal view returns (uint) {
+        uint amount = 0;
+        personalVeLock[] memory locks = userLocks[user];
 
+        for (uint i = 0; i < locks.length; i++) {
+            personalVeLock memory lock = locks[i];
+            if (block.timestamp >= lock.unlockTime) continue;
+            uint daysElapsed = (block.timestamp - lock.originTime) / 1 days;
+            uint remainingDays = lock.duration - daysElapsed;
+            uint currentVeLock = lock.originVeLock * remainingDays / lock.duration;
+            amount += currentVeLock;
+        }
+        return amount;
     }
 
-
-    // for single user
-
-
-
-    function checkLOCK() public returns (uint locked, uint unlocked) {
-
+    function _calculateTotalVeLOCK() internal view returns (uint) {
+        uint amount = 0;
+        for (uint i = 0; i < users.length; i++) {
+            amount += _calculatePersonalVeLOCK(users[i]);
+        }
+        return amount;
     }
 
-    /// @dev  if amount = 1, all = 100, you have 1% power to vote
-    function getVoteRight() public returns (uint amount, uint all) {
-
-    }
-
-    function withdraw() public returns (bool) {
-
-    }
-
-
-
-    // 内部
-    function _checkSingle() internal {}
+    
 
     function _isUserExists(address user) internal view returns (bool) {
         for (uint i = 0; i < users.length; i++) {
