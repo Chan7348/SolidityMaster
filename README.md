@@ -21,30 +21,8 @@
 
 VeLOCK, 投票治理代币-非标准ERC20
 
-    用户锁定LOCK，提供 {amount, duration( 30 days <= duration <= 365 days)}, 我们记录OriginTime, 记录 OriginVeLock， amount(OriginVeLOCK) = amount(LOCK) * time / 365;
-
-    最小锁定时间为30天，最大锁定时间为一年
-    假如一个人锁定一个LOCK 365天，那么他立即得到一个VeLOCK，这个VeLOCK每天会减少初始量的1/365
-    先要设计出一份VeLOCK的损耗逻辑和实现方式
-
-    维护两个mapping，一个可以通过地址获得Lock，另一个可以通过序列号获得Lock
-    每次更新当前用户的VeLOCK时都要更新VeLOCK总量
-
-    depoist(uint number, uint duration) {
-
-    }
-
-    calculate() {
-
-    }
-
-
-    VeLOCK需要随时计算，因为每天都会产生变化
-    同时获得：
-        锁定时间： OriginTime,
-        锁定时长： duration,
-        解锁时间： UnlockTime = OriginTime + duration
-
+    用户锁定LOCK，提供数量和锁定时长, 
+    我们记录本次锁定的一些固定数据，每次锁定都是分开的独立结构体：
     struct VeLock {
         uint amount; //质押的LOCK数量
         uint originTime; //初始锁定时间
@@ -52,31 +30,52 @@ VeLOCK, 投票治理代币-非标准ERC20
         uint unlockTime; //解锁时间
         uint originVeLock; //初始的VeLOCK计算结果
     }
-    mapping(address => VeLOCK[]) public userLocks;
 
-    我们实时计算：
-        剩余时间： rest = UnlockTime - block.timestamp
+    锁定逻辑：最小锁定时间为30天，最大锁定时间为一年。假如一个人锁定一个LOCK 365天，那么他立即得到一个VeLOCK，这个VeLOCK每天会减少初始量的1/365，减少的时间间隔为一天。到期之后可以取出，也可以继续存放，不过过期的LOCK不会有对应的VeLOCK了。
 
 
-    根据公式，本次的VeLOCK: amount(VeLOCK) = amount(OriginVeLOCK) * rest / duration
+    数据结构：
+        一个数组用来储存所有的用户 address[] public users;
+        一个mapping用来根据用户的地址查询他所有的锁定 mapping(address => personalVeLock[]) private userLocks;
 
+
+    内部函数：
+        function _isUserExists(address user) internal view returns (bool);
+            查询用户是否有LOCK在合约里（包含锁定中+锁定过期未取出的LOCK）
+        
+        function _calculatePersonalVeLOCK(address user) internal view returns (uint);
+            根据个人的LOCK存档计算他当前的的VeLOCK
+
+        function _calculateTotalVeLOCK() internal view returns (uint);
+            累加所有人的VeLOCK得到VeLOCK总量
+
+    
     外部函数：
-        总： 
-            view LOCK锁仓量 getTotalLOCKstaked()
-            VeLOCK总量
+        function addLock(uint amount, uint duration) external;
+            为新用户或者老用户锁定一定数量的LOCK
 
-        单独用户：
-            checkLOCK() 调用_checkSingle返回结果  
-            getVoteRight() 用户的投票权       
-            withdraw() 取出所有解锁的LOCK
+        function withdrawLock(uint index) external;
+            为老用户取出锁定完成的LOCK
 
-    内部函数逻辑:
-        _deposit() 迭代此用户的VeLOCK数量和总的VeLOCK数量 {
-            质押
-            每次有用户查询自己的VeLOCK和投票比重的时候执行_update
-            每次查询totalVeLock的时候要执行_update
-        }
-        _update() 在_deposit()内部需要执行，计算当前时间点的VeLOCK
-        _checkSingle 检查和更新单独用户的锁仓量和解锁量
+        function getVotingPower(address user) external view returns (uint power, uint totalPower);
+            得到个人VeLOCK和VeLOCK总量，可以用来计算投票权
+
+        function totalSupply() external view returns (uint);
+            得到VeLOCK总供应量
+        
+        function balanceOf(address user) external view returns (uint);
+            得到个人的VeLOCk数量
+
+    公共函数:
+        name()
+        symbol()
+        decimals()
+        users() -> 根据index查询用户地址
+        token() -> LOCK实例地址
+
+    事件: 
+        event AddLock(address indexed user, uint amount, uint duration);
+        event WithdrawLock(address indexed user, uint amount);
+
 
 
