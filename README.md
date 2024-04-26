@@ -77,9 +77,3 @@ VeLOCK, 投票治理代币-非标准ERC20
         event AddLock(address indexed user, uint amount, uint duration);
         event WithdrawLock(address indexed user, uint amount);
 
-
-
-需求高峰的时期：牛/熊
-老板裁员的逻辑
-大公司/小公司 培养/需求
-风险

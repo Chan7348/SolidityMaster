@@ -31,10 +31,11 @@
     "ts-node": "^10.9.2",
     "typechain": "^8.3.2",
     "typescript": "^5.4.3",
-    "viem": "2.9.23"
-  },
-  "dependencies": {
+    "viem": "2.9.23",
     "@uniswap/v2-core": "^1.0.1",
     "@uniswap/v2-periphery": "^1.1.0-beta.0"
+  },
+  "dependencies": {
+    
   }
 }
