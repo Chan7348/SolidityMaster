@@ -1,4 +1,4 @@
-# HardhatTemplate
+# SOLIDITYMASTER
     实现一个ERC20代币合约并完成部署和verify到sepolia网络，除了满足最基本的ERC20标准之外，再增加几个功能：
         1. 支持增发，但每次增发比例不能超过1%，且增发间隔至少需要1年以上；
         2. 只有合约的owner才可以增发；
