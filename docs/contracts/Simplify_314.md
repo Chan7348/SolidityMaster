@@ -1,0 +1,497 @@
+# Simplify_314
+
+
+
+
+
+
+
+
+
+## Methods
+
+### _maxWallet
+
+```solidity
+function _maxWallet() external view returns (uint256)
+```
+
+
+
+
+
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | uint256 | undefined |
+
+### addLiquidity
+
+```solidity
+function addLiquidity(uint32 _blockToUnlockLiquidity) external payable
+```
+
+
+
+*Adds liquidity to the contract.*
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| _blockToUnlockLiquidity | uint32 | : the block number to unlock the liquidity. value: the amount of ETH to add to the liquidity. onlyOwner modifier |
+
+### balanceOf
+
+```solidity
+function balanceOf(address account) external view returns (uint256)
+```
+
+
+
+*See {IERC20-balanceOf}.*
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| account | address | undefined |
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | uint256 | undefined |
+
+### blockToUnlockLiquidity
+
+```solidity
+function blockToUnlockLiquidity() external view returns (uint32)
+```
+
+
+
+
+
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | uint32 | undefined |
+
+### decimals
+
+```solidity
+function decimals() external view returns (uint8)
+```
+
+
+
+*Returns the number of decimals used to get its user representation.*
+
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | uint8 | undefined |
+
+### enableMaxWallet
+
+```solidity
+function enableMaxWallet(bool _maxWalletEnable) external nonpayable
+```
+
+
+
+*Enables or disables the max wallet.*
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| _maxWalletEnable | bool | : true to enable max wallet, false to disable max wallet. onlyOwner modifier |
+
+### enableTrading
+
+```solidity
+function enableTrading(bool _tradingEnable) external nonpayable
+```
+
+
+
+*Enables or disables trading.*
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| _tradingEnable | bool | : true to enable trading, false to disable trading. onlyOwner modifier |
+
+### extendLiquidityLock
+
+```solidity
+function extendLiquidityLock(uint32 _blockToUnlockLiquidity) external nonpayable
+```
+
+
+
+*Extends the liquidity lock, only if the new block number is higher than the current one.*
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| _blockToUnlockLiquidity | uint32 | : the new block number to unlock the liquidity. onlyLiquidityProvider modifier |
+
+### getAmountOut
+
+```solidity
+function getAmountOut(uint256 value, bool _buy) external view returns (uint256)
+```
+
+
+
+*Estimates the amount of tokens or ETH to receive when buying or selling.*
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| value | uint256 | : the amount of ETH or tokens to swap. |
+| _buy | bool | : true if buying, false if selling. |
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | uint256 | undefined |
+
+### getReserves
+
+```solidity
+function getReserves() external view returns (uint256, uint256)
+```
+
+
+
+*Returns the amount of ETH and tokens in the contract, used for trading.*
+
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | uint256 | undefined |
+| _1 | uint256 | undefined |
+
+### liquidityAdded
+
+```solidity
+function liquidityAdded() external view returns (bool)
+```
+
+
+
+
+
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | bool | undefined |
+
+### liquidityProvider
+
+```solidity
+function liquidityProvider() external view returns (address)
+```
+
+
+
+
+
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | address | undefined |
+
+### maxWalletEnable
+
+```solidity
+function maxWalletEnable() external view returns (bool)
+```
+
+
+
+
+
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | bool | undefined |
+
+### name
+
+```solidity
+function name() external view returns (string)
+```
+
+
+
+*Returns the name of the token.*
+
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | string | undefined |
+
+### owner
+
+```solidity
+function owner() external view returns (address)
+```
+
+
+
+
+
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | address | undefined |
+
+### presale
+
+```solidity
+function presale(address[] _investors) external nonpayable
+```
+
+
+
+*Sends the presale amount to the investors*
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| _investors | address[] | undefined |
+
+### presaleEnable
+
+```solidity
+function presaleEnable() external view returns (bool)
+```
+
+
+
+
+
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | bool | undefined |
+
+### removeLiquidity
+
+```solidity
+function removeLiquidity() external nonpayable
+```
+
+
+
+*Removes liquidity from the contract. onlyLiquidityProvider modifier*
+
+
+### renounceOwnership
+
+```solidity
+function renounceOwnership() external nonpayable
+```
+
+
+
+*Transfers the ownership of the contract to zero address onlyOwner modifier*
+
+
+### setMaxWallet
+
+```solidity
+function setMaxWallet(uint256 _maxWallet_) external nonpayable
+```
+
+
+
+*Sets the max wallet.*
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| _maxWallet_ | uint256 | : the new max wallet. onlyOwner modifier |
+
+### symbol
+
+```solidity
+function symbol() external view returns (string)
+```
+
+
+
+*Returns the symbol of the token, usually a shorter version of the name.*
+
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | string | undefined |
+
+### totalSupply
+
+```solidity
+function totalSupply() external view returns (uint256)
+```
+
+
+
+*See {IERC20-totalSupply}.*
+
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | uint256 | undefined |
+
+### tradingEnable
+
+```solidity
+function tradingEnable() external view returns (bool)
+```
+
+
+
+
+
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | bool | undefined |
+
+### transfer
+
+```solidity
+function transfer(address to, uint256 value) external nonpayable returns (bool)
+```
+
+
+
+*See {IERC20-transfer}. Requirements: - the caller must have a balance of at least `value`. - if the receiver is the contract, the caller must send the amount of tokens to sell*
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| to | address | undefined |
+| value | uint256 | undefined |
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | bool | undefined |
+
+
+
+## Events
+
+### AddLiquidity
+
+```solidity
+event AddLiquidity(uint32 _blockToUnlockLiquidity, uint256 value)
+```
+
+
+
+
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| _blockToUnlockLiquidity  | uint32 | undefined |
+| value  | uint256 | undefined |
+
+### RemoveLiquidity
+
+```solidity
+event RemoveLiquidity(uint256 value)
+```
+
+
+
+
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| value  | uint256 | undefined |
+
+### Swap
+
+```solidity
+event Swap(address indexed sender, uint256 amount0In, uint256 amount1In, uint256 amount0Out, uint256 amount1Out)
+```
+
+
+
+
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| sender `indexed` | address | undefined |
+| amount0In  | uint256 | undefined |
+| amount1In  | uint256 | undefined |
+| amount0Out  | uint256 | undefined |
+| amount1Out  | uint256 | undefined |
+
+### Transfer
+
+```solidity
+event Transfer(address indexed from, address indexed to, uint256 value)
+```
+
+
+
+
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| from `indexed` | address | undefined |
+| to `indexed` | address | undefined |
+| value  | uint256 | undefined |
+
+
+

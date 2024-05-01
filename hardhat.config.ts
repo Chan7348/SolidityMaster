@@ -2,6 +2,8 @@ import { HardhatUserConfig, vars } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox-viem";
 import "@nomicfoundation/hardhat-viem";
 import "@nomicfoundation/hardhat-foundry";
+import "@nomicfoundation/hardhat-chai-matchers";
+import '@primitivefi/hardhat-dodoc';
 const config: HardhatUserConfig = {
   solidity: {
     version: "0.8.24",
@@ -59,6 +61,10 @@ const config: HardhatUserConfig = {
       optimism: '79WNIY53FCZY116W61ZN8DDTE1THBBVKN7',
       base: 'TJY2CHMTQMI1HF4WVQJES2CDVF4K733CUK',
     }
+  },
+  dodoc: {
+    runOnCompile: true,
+    debugMode: false,
   }
 };
 

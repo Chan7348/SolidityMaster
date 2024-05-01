@@ -1,20 +1,39 @@
 import hre from "hardhat";
 import * as viem from "viem";
+import { vars } from "hardhat/config";
+import { getBalance } from "viem/_types/actions/public/getBalance";
+import { deployContract } from "@nomicfoundation/hardhat-viem/types";
 const hre_viem = hre.viem;
 
 async function main(){
-    const LOCK = await hre_viem.getContractAt("LOCK", "0xBE474255dC5946eB46125973AE50538b42542b77", {
-        client: { wallet: await hre_viem.getWalletClient("0xbB3AF9dB7480ed8f0F296E2395ec794f23F8c748") }
-    });
-    // 查看合约的所有者
-    const owner = await LOCK.read.getOwner();
-    console.log(owner);
+    // set of public client
+    const publicClient = await hre_viem.getPublicClient();
+    // set of wallet client
+    const [ test1, test2 ] = await hre_viem.getWalletClients();
+    const addressOfTest1 = test1.account.address;
+    console.log(`Address of test1: ${addressOfTest1}`);
+    const balanceOfTest1 = await publicClient.getBalance({address: addressOfTest1});
+    console.log(`Balance of test1: ${viem.formatEther(balanceOfTest1)}`);
+    const addressOfTest2 = test2.account.address;
+    console.log(`Address of test2: ${addressOfTest2}`);
+    const balanceOfTest2 = await publicClient.getBalance({address: addressOfTest2});
+    console.log(`Balance of test2: ${viem.formatEther(balanceOfTest2)}`);
 
-    const test1: viem.Address = "0xbB3AF9dB7480ed8f0F296E2395ec794f23F8c748";
+    // self test
+    // const receiver = await hre_viem.deployContract("Receiver"); // 0xfae954e4f223ac1e2cc7437563dbb5b2e2a3fb9e
+    // console.log(`Contract address: ${receiver.address}`);
 
-    const balance1 = await LOCK.read.balanceOf([test1]);
-    console.log(viem.formatUnits(balance1, 3));
+    // const Caller = await hre_viem.deployContract("Caller");
+    // console.log(`Caller address: ${Caller.address}`);
 
+    // const receiverAddress:viem.Address = "0xfae954e4f223ac1e2cc7437563dbb5b2e2a3fb9e"; 
+    // await Caller.write.testCallFoo([receiverAddress]);
+    // const logs = await publicClient.getContractEvents({address: Caller.address});
+    const erc3525 = await hre_viem.deployContract("ERC3525GettingStarted");
+    console.log(`ERC3525GettingStarted address: ${erc3525.address}`);
 }
 
-main().catch(console.error);
+main().then(() => process.exit(0)).catch(error => {
+    console.error(error);
+    process.exit(1);
+});

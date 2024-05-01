@@ -21,21 +21,22 @@
     "@nomicfoundation/hardhat-viem": "2.0.1",
     "@openzeppelin/contracts": "^5.0.2",
     "@openzeppelin/test-helpers": "^0.5.16",
+    "@primitivefi/hardhat-dodoc": "^0.2.3",
+    "@solvprotocol/erc-3525": "^1.5.0",
     "@typechain/hardhat": "^9.1.0",
     "@types/chai": "^4.3.14",
     "@types/mocha": "^10.0.6",
-    "hardhat": "^2.22.2",
+    "@uniswap/v2-core": "^1.0.1",
+    "@uniswap/v2-periphery": "^1.1.0-beta.0",
+    "@uniswap/v3-core": "^1.0.1",
+    "@uniswap/v3-periphery": "^1.4.4",
+    "hardhat": "^2.22.3",
     "hardhat-abi-exporter": "^2.10.1",
     "hardhat-gas-reporter": "^1.0.10",
     "solidity-coverage": "^0.8.11",
     "ts-node": "^10.9.2",
     "typechain": "^8.3.2",
     "typescript": "^5.4.3",
-    "viem": "2.9.23",
-    "@uniswap/v2-core": "^1.0.1",
-    "@uniswap/v2-periphery": "^1.1.0-beta.0"
-  },
-  "dependencies": {
-    
+    "viem": "2.9.23"
   }
 }
