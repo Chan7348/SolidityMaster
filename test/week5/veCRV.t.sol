@@ -40,9 +40,9 @@ contract TestveCRV is Test {
     function testDataType() public {
         dataType(p0);
     }
-    function dataType(Lock storage p_) private {
-        Lock memory p1 = p0;
-        Lock memory p2 = p0;
+    function dataType(Lock memory p_) private {
+        Lock memory p1 = p_;
+        Lock memory p2 = p_;
         p1.time = 100000000;
         p1.amount = 100000000;
         console.log("global:",p0.time);

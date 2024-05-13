@@ -148,7 +148,7 @@ contract veCRV is IveCRV {
         require(_locked.amount == 0, "Withdraw old tokens first"); // 如果已有锁定金额，禁止创建新的锁定
         require(_unlockTime > block.timestamp, "Can only lock until time in the future"); // 检查解锁时间
         require(_unlockTime <= block.timestamp + MAXTIME, "Voting lock can be 4 years max"); // 限制解锁时间长度
-        _depositFor(msg.sender, _value, _unlockTime, _locked, CREATE_LOCK_TYPE);
+        _depositFor(msg.sender, _value, _unlockTime, locked[msg.sender], CREATE_LOCK_TYPE);
     }
     function increaseAmount(uint _value) external lockUp {
         _assertNotContract(msg.sender);
@@ -156,7 +156,7 @@ contract veCRV is IveCRV {
         require(_value > 0);
         require(_locked.amount > 0, "No existing lock found");
         require(_locked.end > block.timestamp, "Cannot add to expired lock. Withdraw");
-        _depositFor(msg.sender, _value, 0, _locked, INCREASE_LOCK_AMOUNT);
+        _depositFor(msg.sender, _value, 0, locked[msg.sender], INCREASE_LOCK_AMOUNT);
     }
     function increaseUnlockTime(uint _unlockTime) external lockUp {
         _assertNotContract(msg.sender);
@@ -166,13 +166,13 @@ contract veCRV is IveCRV {
         require(_locked.amount > 0, "Nothing is locked");
         require(_unlockTime > _locked.end, "Can only increase lock duration");
         require(_unlockTime <= block.timestamp + MAXTIME, "Voting lock can be 4 years max");
-        _depositFor(msg.sender, 0, _unlockTime, _locked, INCREASE_UNLOCK_TIME);
+        _depositFor(msg.sender, 0, _unlockTime, locked[msg.sender], INCREASE_UNLOCK_TIME);
     }
     function withdraw() external lockUp {
-        LockedBalance memory _locked = locked[msg.sender];
+        LockedBalance storage _locked = locked[msg.sender];
         require(block.timestamp >= _locked.end, "The lock didn't expire");
         uint _value = uint(int(_locked.amount));
-        LockedBalance memory _oldLocked = _locked;
+        LockedBalance memory _oldLocked = locked[msg.sender];
         _locked.end = 0;
         _locked.amount = 0;
         locked[msg.sender] = _locked;
@@ -251,10 +251,10 @@ contract veCRV is IveCRV {
         uint _targetEpoch = _findBlockEpoch(_block, _epoch);
         Point memory _point = pointHistory[_targetEpoch];
         uint _dT = 0;
-        if (_targetEpoch < _epoch) {
+        if (_targetEpoch < _epoch) {// Check if the target epoch is less than the current epoch
             Point memory _pointNext = pointHistory[_targetEpoch + 1];
             if (_point.blockNumber != _pointNext.blockNumber) _dT = (_block - _point.blockNumber) * (_pointNext.timestamp - _point.timestamp) / (_pointNext.blockNumber - _point.blockNumber);
-        } else {
+        } else {// Handle the case where the target epoch is the current epoch (no next point to interpolate)
             if (_point.blockNumber != block.number) _dT = (_block - _point.blockNumber) * (block.timestamp - _point.timestamp) / (block.number - _point.blockNumber);
         }
         return _supplyAt(_point, _point.timestamp + _dT);
@@ -369,7 +369,7 @@ contract veCRV is IveCRV {
     }
     /// @dev 向有投票权的账号进行储蓄
     /// 可以用来更改储蓄的金额 / 修改解锁的时间
-    function _depositFor(address _addr, uint _value, uint _unlockTime, LockedBalance memory _lockedBalance, int128 _typee) internal {
+    function _depositFor(address _addr, uint _value, uint _unlockTime, LockedBalance storage _lockedBalance, int128 _typee) internal {
         LockedBalance memory _locked = _lockedBalance; // 拿到当前用户的存款账号
         uint _supplyBefore = supply; // 记录进行储蓄之前的CRV总供应量
         supply = _supplyBefore + _value; // CRV总供应量更新

@@ -19,15 +19,15 @@ contract FaucetTest is Test {
         owner = msg.sender;
         token.transfer(address(faucet), 10 * 1e18);
     }
-    // function testToken() public {
-    //     console.log("Total supply: ", token.totalSupply());
-    //     console.log("token in faucet: ", token.balanceOf(address(faucet)));
-    //     faucet.requestToken();
-    //     assertEq(token.balanceOf(address(this)), 100);
-    //     assertEq(token.balanceOf(address(faucet)), 10 * 1e18 - 100);
-    // }
-    // function testFailedToken() public {
-    //     faucet.requestToken();
-    //     faucet.requestToken();
-    // }
+    function testToken() public {
+        console.log("Total supply: ", token.totalSupply());
+        console.log("token in faucet: ", token.balanceOf(address(faucet)));
+        faucet.requestToken();
+        assertEq(token.balanceOf(address(this)), 100);
+        assertEq(token.balanceOf(address(faucet)), 10 * 1e18 - 100);
+    }
+    function testFailedToken() public {
+        faucet.requestToken();
+        faucet.requestToken();
+    }
 }

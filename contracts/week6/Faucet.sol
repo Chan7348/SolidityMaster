@@ -16,7 +16,7 @@ contract Faucet is IFaucet {
         owner = msg.sender;
     }
     modifier notRequested {
-        require(requested[msg.sender] == 0, "Faucet: already requested");
+        require(requested[msg.sender] == 0, "Faucet: Limit reached!");
         _;
     }
     modifier onlyOwner {
@@ -24,6 +24,7 @@ contract Faucet is IFaucet {
         _;
     }
     function requestToken() external notRequested {
+        require(block.timestamp >= requested[msg.sender] + 1 weeks);
         token.transfer(msg.sender, 100);
         requested[msg.sender] = block.timestamp;
         emit TokenRequested(msg.sender, 100);
