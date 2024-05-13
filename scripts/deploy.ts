@@ -3,7 +3,7 @@ import { viem } from "hardhat";
 import { vars } from "hardhat/config";
 
 async function deploy() {
-    const WBTC = await viem.deployContract("")
+    const CRV = await viem.deployContract("CRV",  ["CRV", "CRV", 18]);
 }
 
 deploy().then(() => process.exit(0)).catch(error => {

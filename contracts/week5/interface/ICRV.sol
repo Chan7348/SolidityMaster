@@ -14,10 +14,6 @@ interface IERC20 {
     function approve(address spender, uint value) external returns (bool);
     function transfer(address to, uint value) external returns (bool);
     function transferFrom(address from, address to, uint256 value) external returns (bool);
-    function mint(address to, uint value) external returns (bool);
-    function burn(uint value) external returns (bool);
-    function minter() external view returns (address);
-    function admin() external view returns (address);
 }
 interface ICRV is IERC20 {
     event UpdateMiningParameters(uint time, uint rate, uint supply);
@@ -31,4 +27,8 @@ interface ICRV is IERC20 {
     function set_minter(address minter) external;
     function set_admin(address admin) external;
     function set_name(string memory name, string memory symbol) external;
+    function mint(address to, uint value) external returns (bool);
+    function burn(uint value) external returns (bool);
+    function minter() external view returns (address);
+    function admin() external view returns (address);
 }

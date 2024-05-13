@@ -29,8 +29,10 @@ async function main(){
     // const receiverAddress:viem.Address = "0xfae954e4f223ac1e2cc7437563dbb5b2e2a3fb9e"; 
     // await Caller.write.testCallFoo([receiverAddress]);
     // const logs = await publicClient.getContractEvents({address: Caller.address});
-    const erc3525 = await hre_viem.deployContract("ERC3525GettingStarted");
-    console.log(`ERC3525GettingStarted address: ${erc3525.address}`);
+    // const erc3525 = await hre_viem.deployContract("ERC3525GettingStarted");
+    // console.log(`ERC3525GettingStarted address: ${erc3525.address}`);
+    const crv = await hre_viem.deployContract("CRV", ["Curve DAO Token", "CRV", 18]);
+    console.log(`CRV address: ${crv.address}`);
 }
 
 main().then(() => process.exit(0)).catch(error => {

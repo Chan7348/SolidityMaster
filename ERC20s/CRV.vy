@@ -106,6 +106,8 @@ def _update_mining_parameters():
     _rate: uint256 = self.rate
     _start_epoch_supply: uint256 = self.start_epoch_supply
 
+
+
     self.start_epoch_time += RATE_REDUCTION_TIME
     self.mining_epoch += 1
 
