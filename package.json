@@ -33,6 +33,7 @@
     "hardhat": "^2.22.3",
     "hardhat-abi-exporter": "^2.10.1",
     "hardhat-gas-reporter": "^1.0.10",
+    "merkletree": "^1.5.0",
     "solidity-coverage": "^0.8.11",
     "ts-node": "^10.9.2",
     "typechain": "^8.3.2",

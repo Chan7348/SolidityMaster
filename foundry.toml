@@ -10,3 +10,5 @@ seed = 0x1
 runs = 1000
 depth = 128
 fail_on_revert = false
+
+[rpc_endpoints]
